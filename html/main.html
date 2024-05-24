@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campground Sites</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="tab-container">
+        <div class="tabs">
+            <button class="tab-link active" onclick="openTab(event, 'TentSites')">Tent Sites</button>
+            <button class="tab-link" onclick="openTab(event, 'Glamping')">Glamping</button>
+            <button class="tab-link" onclick="openTab(event, 'CabinsCampers')">Cabins & Campers</button>
+        </div>
+
+        <div id="TentSites" class="tab-content" style="display: block;">
+            <h2>Tent Sites</h2>
+            <table>
+                <tr>
+                    <th>Site Name</th>
+                    <th>Nightly Rate</th>
+                    <th>Photo</th>
+                    <th>URL</th>
+                </tr>
+                <tr>
+                    <td>Creekside Retreat</td>
+                    <td>$40</td>
+                    <td><img src="creekside.jpg" alt="Creekside Retreat" width="100"></td>
+                    <td><a href="creekside.html">More Info</a></td>
+                </tr>
+                <!-- Add more tent sites here -->
+            </table>
+        </div>
+
+        <div id="Glamping" class="tab-content">
+            <h2>Glamping</h2>
+            <table>
+                <tr>
+                    <th>Site Name</th>
+                    <th>Nightly Rate</th>
+                    <th>Photo</th>
+                    <th>URL</th>
+                </tr>
+                <tr>
+                    <td>Luxury Tent</td>
+                    <td>$120</td>
+                    <td><img src="luxury-tent.jpg" alt="Luxury Tent" width="100"></td>
+                    <td><a href="luxury-tent.html">More Info</a></td>
+                </tr>
+                <!-- Add more glamping sites here -->
+            </table>
+        </div>
+
+        <div id="CabinsCampers" class="tab-content">
+            <h2>Cabins & Campers</h2>
+            <table>
+                <tr>
+                    <th>Site Name</th>
+                    <th>Nightly Rate</th>
+                    <th>Photo</th>
+                    <th>URL</th>
+                </tr>
+                <tr>
+                    <td>Cozy Cabin</td>
+                    <td>$80</td>
+                    <td><img src="cozy-cabin.jpg" alt="Cozy Cabin" width="100"></td>
+                    <td><a href="cozy-cabin.html">More Info</a></td>
+                </tr>
+                <!-- Add more cabins and campers here -->
+            </table>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

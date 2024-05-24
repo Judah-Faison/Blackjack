@@ -71,7 +71,7 @@ class Player:
 players = {
     "Judah": Player("Judah")
 
-}
+} 
 
 def main(game: Game):
     game.fetch_players()

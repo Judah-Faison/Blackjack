@@ -2,7 +2,6 @@ from random import shuffle
 ##### this is where i define some variables that I will use throughout the programm
 facecards = ['Jack', 'Queen', 'King']                #a list of the cards that have a special atribute
 suits = ['Diamonds', 'Hearts', 'Clubs', 'Spades']    #a list of the suits
-deck = []                                            #an empty list that we will store all the cards in
 
 class Card:
     def __init__(self, sute, name):
@@ -24,11 +23,18 @@ class Card:
         self.printable_format=f'{self.name} of {self.sute}' 
         
     
+
+
+
                                     # this is where we fill in the deck with cards
-for _suit in range(0, 4):           # 4 times it goes thru the processs, once per suit
-    suit = suits[_suit]             # the _suit is a placeholder cuz your to dumb to think of something better
-    for value in range(1, 10):
-        deck.append(Card(suit, value))
-    for facecard in facecards:
-        deck.append(Card(suit, facecard))
-        shuffle(deck)
+
+def mk_deck(deck: list):
+    for _suit in range(0, 4):           # 4 times it goes thru the processs, once per suit
+        suit = suits[_suit]             # the _suit is a placeholder cuz your to dumb to think of something better
+        for value in range(1, 10):
+            deck.append(Card(suit, value))
+        for facecard in facecards:
+            deck.append(Card(suit, facecard))
+            shuffle(deck)
+    return deck
+

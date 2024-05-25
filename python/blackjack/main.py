@@ -15,18 +15,22 @@ take some time to hash out what happens in blackjack and how the mechanics shoul
 
 
 Still have no clue what I am doing, but I'm working on it. 
+Added a way to get how many players will play, its fetch_players in Game
 5/23/24
 
+Going to work on how the Player are made in the fetch_players
+13:00, 5/25/24
 
 '''
 
-
+PLAYER_ORDER = [[1, 'first'], [2, 'second'], [3, 'third'], [4, 'fourth'], [5, 'fith']]
 
 class Game:
     def __init__(self, deck: list) -> None:
         self.deck=deck
 
     def fetch_players(self):
+        global players
         still_fetching_players=True
         print('Welcome to the cassino\n')
         player_num = input('how many players\n')
@@ -35,7 +39,7 @@ class Game:
         while still_fetching_players == True:
             print("in the while loop")
             try:
-                player_num == int()
+                player_num = int(player_num)
                 print('kinda working')
                 still_fetching_players = False
                 
@@ -46,10 +50,12 @@ class Game:
             except:
                 player_num = input('that\'s not a number')
             
-        print("Ok, we need some user names for ")
+        print("Ok, we need some user names for the players")
         player_num=int(player_num)
-        for player in range(0,  player_num):
-                pass
+        for player in range(1, player_num+1):
+                
+            name = input(f'ok, we need a name for the {PLAYER_ORDER[player-1][1]} player\n')
+            pass
         
 
 

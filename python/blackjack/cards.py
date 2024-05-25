@@ -1,4 +1,4 @@
-import time, cmath, random
+from random import shuffle
 ##### this is where i define some variables that I will use throughout the programm
 facecards = ['Jack', 'Queen', 'King']                #a list of the cards that have a special atribute
 suits = ['Diamonds', 'Hearts', 'Clubs', 'Spades']    #a list of the suits
@@ -31,4 +31,4 @@ for _suit in range(0, 4):           # 4 times it goes thru the processs, once pe
         deck.append(Card(suit, value))
     for facecard in facecards:
         deck.append(Card(suit, facecard))
-        random.shuffle(deck)
+        shuffle(deck)

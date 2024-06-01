@@ -88,6 +88,14 @@ class Game(Player):
                 players[player].hand.append(card)
                 print(f'player {player} was delt a {players[player].hand[card_in_hand_index].printable_format}')
 
+    def turn(self, player):
+        print(f'{player.name}, do you want to take a hit? You have a:')
+        for card in range(len(player.hand)):
+            if card != len(player.hand)-1:
+                print(f'{player.hand[card].printable_format},  ')
+            else:
+                print(f' and a {player.hand[card].printable_format}')
+        pass
 players = {
     "Judah": Player("Judah"),
     "house": Game(deck=deck),
@@ -99,6 +107,7 @@ mk_deck(deck)
 def main(game: Game):
     #game.fetch_players()
     game.deal()
+    game.turn(players['Judah'])
     print('game ON!!')
 
 players['house'].fetch_players

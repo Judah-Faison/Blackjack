@@ -25,6 +25,9 @@ Going to work on how the Player are made in the fetch_players
 2:18, 5/25/24
 I'm going to start to work on the casino it'self
 
+
+8/16/24
+I apologize for having shelved this project
 '''
 
 PLAYER_ORDER = [[1, 'first'], [2, 'second'], [3, 'third'], [4, 'fourth'], [5, 'fith']]

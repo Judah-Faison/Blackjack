@@ -38,7 +38,25 @@ class Player:
         self.name = name
         self.cash = starting_cash
         self.hand = []
+        self.busted = False
 
+    def calc_hand_val(self):
+        if (players['house'].busted_check(self, False)) == False:
+                
+            self.hand_val = 0
+            for _card in self.hand:
+                self.hand_val += _card.value
+        print(self.hand_val)
+        players['house'].busted_check(self, False)
+        if self.busted ==True:
+            print(self.hand_val)
+            print("you busted")
+        elif self.hand_val == 21:
+            print("21, you win!")
+        else:
+                print(f"your hand val is now {self.hand_val}")
+
+        return self.hand_val
 
 
 class Game(Player):
@@ -76,6 +94,7 @@ class Game(Player):
         for player in range(1, player_num+1):
                 
             name = input(f'ok, we need a name for the {PLAYER_ORDER[player-1][1]} player\n')
+            players[name] = Player(name=name)
             pass
         
 
@@ -90,32 +109,82 @@ class Game(Player):
                 print(card.printable_format)
                 players[player].hand.append(card)
                 print(f'player {player} was delt a {players[player].hand[card_in_hand_index].printable_format}')
-
+#player
+    def busted_check(self, player: Player, start: False):
+        player.hand_val = 0
+        for _card in player.hand:
+            player.hand_val += _card.value
+        if player.busted == False and player.hand_val>21:
+            player.busted = True
+            pass
+        if player.busted == True and player.hand_val < 22:
+            player.busted = False
+        if player.busted:
+            pass
+        else:
+            player.busted = False
+            if start == True:
+                self.turn(player)
+            return player.busted
     def turn(self, player):
-        print(f'{player.name}, do you want to take a hit? You have a:')
-        for card in range(len(player.hand)):
-            if card != len(player.hand)-1:
-                print(f'{player.hand[card].printable_format},  ')
+        if (self.busted_check(player, start=False)) == False:
+            print(f'{player.name}, do you want to take a hit? You have a:')
+            for card in range(len(player.hand)):
+                if card != len(player.hand)-1:
+                    print(f'{player.hand[card].printable_format},  ')
+                else:
+                    print(f' and a {player.hand[card].printable_format}')
+            answer = input("Y/n")
+            yes_answers = ["Y", "y"]
+            for _answer in yes_answers:
+                if _answer in answer:
+                    take_hit = True
+                    break
+                else:
+                    take_hit = False
+
+            if take_hit == True:
+                self.take_hit(player)
             else:
-                print(f' and a {player.hand[card].printable_format}')
-        pass
+                print('ok, that\'s the end of your turn')
+            pass
+        else:
+            pass
+    def take_hit(self, player: Player):
+        
+        global deck
+        player.calc_hand_val()
+        card = deck.pop()
+        player.hand.append(card)
+        print(f'you drew a {card.printable_format}')
+        player.calc_hand_val()
+        self.busted_check(player, False)
+        players['house'].turn(player)
+
+        #you busted
 players = {
-    "Judah": Player("Judah"),
     "house": Game(deck=deck),
 
 } 
 
 
 mk_deck(deck)
-def main(game: Game):
-    #game.fetch_players()
-    game.deal()
-    game.turn(players['Judah'])
+def main():
+    players['house'].fetch_players()
+    players['house'].deal()
+    for _player in players:
+        if players[_player] != players['house']:
+
+            players['house'].busted_check(players[_player], True)
+            print(players[_player].busted)
+    players['house'].busted_check(players['house'], start=True)
+    #print(players['house'].busted)
+        
     print('game ON!!')
 
-players['house'].fetch_players
 
-
+print(players)
 
 if __name__ == "__main__":
-    main(game=players['house'])
+    main()
+    pass

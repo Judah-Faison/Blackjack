@@ -28,6 +28,10 @@ I'm going to start to work on the casino it'self
 
 8/16/24
 I apologize for having shelved this project
+
+
+10:55, 9/24/24
+I'm going to make the game less recursive, and more iterative
 '''
 
 PLAYER_ORDER = [[1, 'first'], [2, 'second'], [3, 'third'], [4, 'fourth'], [5, 'fith']]
@@ -39,31 +43,22 @@ class Player:
         self.cash = starting_cash
         self.hand = []
         self.busted = False
+        self.stay = False
 
     def calc_hand_val(self):
-        if (players['house'].busted_check(self, False)) == False:
-                
-            self.hand_val = 0
-            for _card in self.hand:
-                self.hand_val += _card.value
+            
+        self.hand_val = 0
+        for _card in self.hand:
+            self.hand_val += _card.value
         print(self.hand_val)
-        players['house'].busted_check(self, False)
-        if self.busted ==True:
-            print(self.hand_val)
-            print("you busted")
-        elif self.hand_val == 21:
-            print("21, you win!")
-        else:
-                print(f"your hand val is now {self.hand_val}")
 
         return self.hand_val
 
 
-class Game(Player):
+class House(Player):
 
-    def __init__(self, deck:list, starting_cash= int(10000000000000000000)):
-        super().__init__(starting_cash)
-        self.cash = starting_cash
+    def __init__(self, deck:list):
+        super().__init__(name='house', starting_cash=10000000000000)
         self.deck = deck
         self.hand = []
 
@@ -97,87 +92,65 @@ class Game(Player):
             players[name] = Player(name=name)
             pass
         
-
-
-    def deal(self):
-        for card_in_hand_index in range(2):
-            print(card_in_hand_index)
-            for player in players:
-                #for _card in deck:
-                    #print(_card.printable_format)
-                card = deck.pop(0)
-                print(card.printable_format)
-                players[player].hand.append(card)
-                print(f'player {player} was delt a {players[player].hand[card_in_hand_index].printable_format}')
-#player
-    def busted_check(self, player: Player, start: False):
-        player.hand_val = 0
-        for _card in player.hand:
-            player.hand_val += _card.value
-        if player.busted == False and player.hand_val>21:
-            player.busted = True
-            pass
-        if player.busted == True and player.hand_val < 22:
-            player.busted = False
-        if player.busted:
-            pass
-        else:
-            player.busted = False
-            if start == True:
-                self.turn(player)
-            return player.busted
-    def turn(self, player):
-        if (self.busted_check(player, start=False)) == False:
-            print(f'{player.name}, do you want to take a hit? You have a:')
-            for card in range(len(player.hand)):
-                if card != len(player.hand)-1:
-                    print(f'{player.hand[card].printable_format},  ')
-                else:
-                    print(f' and a {player.hand[card].printable_format}')
-            answer = input("Y/n")
-            yes_answers = ["Y", "y"]
-            for _answer in yes_answers:
-                if _answer in answer:
-                    take_hit = True
-                    break
-                else:
-                    take_hit = False
-
-            if take_hit == True:
-                self.take_hit(player)
-            else:
-                print('ok, that\'s the end of your turn')
-            pass
-        else:
-            pass
-    def take_hit(self, player: Player):
+    def hit(self, player:Player):
+        card = self.deck.pop()
+        players[player].hand.append(card)
         
-        global deck
-        player.calc_hand_val()
-        card = deck.pop()
-        player.hand.append(card)
-        print(f'you drew a {card.printable_format}')
-        player.calc_hand_val()
-        self.busted_check(player, False)
-        players['house'].turn(player)
+    def deal(self, player=Player):
+        for _ in range(2):
+            for player in players:
+                self.hit(player)
+
+    def turn(self, player: Player):
+        options  = ['1','2','3']
+        print(f"ok, {player.name}, it's your turn")
+        choice = input(f"""what would you like to do? you have some options. 
+              1: check hand value
+              2: hit
+              3: stay""")
+        while choice not in options:
+            print("that's not an option")
+            choice = input(f"""
+              1: check hand value
+              2: hit
+              3: stay""")
+        if choice == "1":
+            print(f"your hand is {[card.printable_format for card in player.hand]} and your hand value is {player.calc_hand_val()}")
+            if player.calc_hand_val()==21:
+                print(f"you got a blackjack, you win")
+                player.stay = True
+                return player.stay
+        elif choice == "2":
+            self.hit(player)
+            print(f"you got a {player.hand[-1].printable_format}")
+        elif choice == "3":
+            print(f"ok, thats the end of your turn, your hand is {[card.printable_format for card in player.hand]}")
+            player.stay = True
+            return player.stay
+        
+
+
 
         #you busted
 players = {
-    "house": Game(deck=deck),
+    "house": House(deck=deck),
 
 } 
 
 
 mk_deck(deck)
 def main():
-    players['house'].fetch_players()
-    players['house'].deal()
-    for _player in players:
-        if players[_player] != players['house']:
-
-            players['house'].busted_check(players[_player], True)
-            print(players[_player].busted)
-    players['house'].busted_check(players['house'], start=True)
+    players['house'].fetch_players()    #house gets all the players
+    players['house'].deal()             #house deals the cards
+    for _player in players:             #iterates through the players
+        if players[_player] != players['house']:#skips the house because the house goes last
+            while players[_player].busted == False:#player only takes a turn if they haven't busted
+                print(players[_player].busted)
+                players['house'].turn(players[_player]) #player takes a turn
+                if players[_player].stay == True:
+                    break
+                
+    players['house'].turn(players['house'])#lets the house take its turn
     #print(players['house'].busted)
         
     print('game ON!!')
